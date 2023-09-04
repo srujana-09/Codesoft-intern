@@ -1,0 +1,99 @@
+
+#TASK-1
+
+import json
+
+# Initialize an empty list to store tasks
+tasks = []
+
+def load_tasks():
+    try:
+        with open('tasks.json', 'r') as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return []
+
+def save_tasks():
+    with open('tasks.json', 'w') as file:
+        json.dump(tasks, file)
+
+def list_tasks():
+    for index, task in enumerate(tasks, start=1):
+        print(f"{index}. {task['title']} - {task['description']} ({'Complete' if task['completed'] else 'Incomplete'})")
+
+def add_task(title, description):
+    task = {
+        'title': title,
+        'description': description,
+        'completed': False
+    }
+    tasks.append(task)
+    save_tasks()
+
+def mark_task_complete(task_index):
+    if 1 <= task_index <= len(tasks):
+        tasks[task_index - 1]['completed'] = True
+        save_tasks()
+    else:
+        print("Invalid task index.")
+
+def delete_task(task_index):
+    if 1 <= task_index <= len(tasks):
+        del tasks[task_index - 1]
+        save_tasks()
+    else:
+        print("Invalid task index.")
+
+# Load tasks from a file (if available)
+tasks = load_tasks()
+
+while True:
+    print("\nToDo List Application")
+    print("1. List Tasks")
+    print("2. Add Task")
+    print("3. Mark Task as Complete")
+    print("4. Delete Task")
+    print("5. Exit")
+
+    choice = input("Enter your choice: ")
+
+    if choice == '1':
+        list_tasks()
+    elif choice == '2':
+        title = input("Enter task title: ")
+        description = input("Enter task description: ")
+        add_task(title, description)
+    elif choice == '3':
+        list_tasks()
+        task_index = int(input("Enter the task index to mark as complete: "))
+        mark_task_complete(task_index)
+    elif choice == '4':
+        list_tasks()
+        task_index = int(input("Enter the task index to delete: "))
+        delete_task(task_index)
+    elif choice == '5':
+        break
+    else:
+        print("Invalid choice. Please try again.")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
